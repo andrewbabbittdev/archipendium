@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/Archipendium.csproj" Id="136e8ea3-28c5-45b1-a488-2dc9ca98c026">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+</Solution>

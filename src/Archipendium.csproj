@@ -1,0 +1,7 @@
+﻿<Project Sdk="Dalamud.NET.Sdk/13.1.0">
+
+  <ItemGroup>
+    <PackageVersion Include="Archipelago.MultiClient.Net" Version="6.7.0" />
+  </ItemGroup>
+
+</Project>

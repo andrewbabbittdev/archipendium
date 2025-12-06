@@ -1,0 +1,11 @@
+{
+    "Author": "The Archipendium Contributors",
+    "Name": "Archipendium",
+    "Punchline": "A plugin for giving hints for your Archipelago games.",
+    "Description": "A plugin for giving hints for your Archipelago games.",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "Archipelago",
+        "Archipendium"
+    ]
+}

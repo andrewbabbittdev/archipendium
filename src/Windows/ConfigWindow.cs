@@ -15,13 +15,13 @@ namespace Archipendium.Windows;
 /// </summary>
 public class ConfigWindow : Window
 {
-    private readonly IOptions<Configuration> _config;
+    private readonly IOptionsMonitor<Configuration> _config;
 
     /// <summary>
     /// Initializes a new instance of the ConfigWindow.
     /// </summary>
     /// <param name="config">The configuration options.</param>
-    public ConfigWindow(IOptions<Configuration> config) : base("Archipendium Config")
+    public ConfigWindow(IOptionsMonitor<Configuration> config) : base("Archipendium Config")
     {
         Flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
         Size = new Vector2(266, 160);
@@ -33,39 +33,39 @@ public class ConfigWindow : Window
     /// <inheritdoc/>
     public override void Draw()
     {
-        var displayChatMessages = _config.Value.DisplayChatMessages;
+        var displayChatMessages = _config.CurrentValue.DisplayChatMessages;
         if (ImGui.Checkbox("Display chat messages", ref displayChatMessages))
         {
-            _config.Value.DisplayChatMessages = displayChatMessages;
-            _config.Value.Save();
+            _config.CurrentValue.DisplayChatMessages = displayChatMessages;
+            _config.CurrentValue.Save();
         }
 
-        var displayFoundHintMessages = _config.Value.DisplayFoundHintMessages;
+        var displayFoundHintMessages = _config.CurrentValue.DisplayFoundHintMessages;
         if (ImGui.Checkbox("Display hints on found items", ref displayFoundHintMessages))
         {
-            _config.Value.DisplayFoundHintMessages = displayFoundHintMessages;
-            _config.Value.Save();
+            _config.CurrentValue.DisplayFoundHintMessages = displayFoundHintMessages;
+            _config.CurrentValue.Save();
         }
 
-        var displayJoinLeaveMessages = _config.Value.DisplayJoinLeaveMessages;
+        var displayJoinLeaveMessages = _config.CurrentValue.DisplayJoinLeaveMessages;
         if (ImGui.Checkbox("Display join / leave notifications", ref displayJoinLeaveMessages))
         {
-            _config.Value.DisplayJoinLeaveMessages = displayJoinLeaveMessages;
-            _config.Value.Save();
+            _config.CurrentValue.DisplayJoinLeaveMessages = displayJoinLeaveMessages;
+            _config.CurrentValue.Save();
         }
 
-        var displayItemSentMessages = _config.Value.DisplayItemSentMessages;
+        var displayItemSentMessages = _config.CurrentValue.DisplayItemSentMessages;
         if (ImGui.Checkbox("Display sent items notifications", ref displayItemSentMessages))
         {
-            _config.Value.DisplayItemSentMessages = displayItemSentMessages;
-            _config.Value.Save();
+            _config.CurrentValue.DisplayItemSentMessages = displayItemSentMessages;
+            _config.CurrentValue.Save();
         }
 
-        var displayItemReceivedMessages = _config.Value.DisplayItemReceivedMessages;
+        var displayItemReceivedMessages = _config.CurrentValue.DisplayItemReceivedMessages;
         if (ImGui.Checkbox("Display received items notifications", ref displayItemReceivedMessages))
         {
-            _config.Value.DisplayItemReceivedMessages = displayItemReceivedMessages;
-            _config.Value.Save();
+            _config.CurrentValue.DisplayItemReceivedMessages = displayItemReceivedMessages;
+            _config.CurrentValue.Save();
         }
     }
 }

@@ -20,9 +20,9 @@ public class ArchipelagoService(IChatGui chatGui) : IDisposable
     public bool IsConnected => _client is not null && _client.Socket.Connected;
 
     /// <summary>
-    /// Gets the number of hint tokens currently available to the user.
+    /// Gets the number of credits currently available to the user.
     /// </summary>
-    public int HintTokens { get; private set; }
+    public int Credits { get; private set; }
 
     private ArchipelagoSession? _client;
 
@@ -58,8 +58,8 @@ public class ArchipelagoService(IChatGui chatGui) : IDisposable
 
         if (result.Successful)
         {
-            _client.DataStorage[Scope.Slot, "ArchipendiumHintTokens"].Initialize(0);
-            HintTokens = _client.DataStorage[Scope.Slot, "ArchipendiumHintTokens"].To<int>();
+            _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].Initialize(0);
+            Credits = _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].To<int>();
 
             chatGui.Print($"Connected to Archipelago session at {host} as {slot}.", "Archipelago");
         }

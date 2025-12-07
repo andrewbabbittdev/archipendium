@@ -46,7 +46,7 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
             EnvironmentName = pluginInterface.IsDev ? Environments.Development : Environments.Production
         });
 
-        AddDefaultServices(pluginInterface, _hostApplicationBuilder.Services);
+        _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IChatGui>());
     }
 
     /// <inheritdoc/>
@@ -62,10 +62,5 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
     public DalamudApplication Build()
     {
         return new(_hostApplicationBuilder.Build());
-    }
-
-    private static void AddDefaultServices(IDalamudPluginInterface pluginInterface, IServiceCollection services)
-    {
-        services.AddSingleton(pluginInterface.GetRequiredService<IChatGui>());
     }
 }

@@ -32,12 +32,6 @@ public sealed class DalamudApplication : IHost
         return new(pluginInterface);
     }
 
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        _host.Dispose();
-    }
-
     /// <summary>
     /// Starts the application synchronously.
     /// </summary>
@@ -64,5 +58,11 @@ public sealed class DalamudApplication : IHost
     public Task StopAsync(CancellationToken cancellationToken = default)
     {
         return _host.StopAsync(cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _host.Dispose();
     }
 }

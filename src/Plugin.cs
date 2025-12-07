@@ -32,6 +32,7 @@ public class Plugin : IDalamudPlugin
     public void Dispose()
     {
         _app.Stop();
+        _app.Dispose();
 
         GC.SuppressFinalize(this);
     }

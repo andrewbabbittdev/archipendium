@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Dalamud.NET.Sdk/13.1.0">
 
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageVersion Include="Archipelago.MultiClient.Net" Version="6.7.0" />
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.11" />
   </ItemGroup>
 
 </Project>

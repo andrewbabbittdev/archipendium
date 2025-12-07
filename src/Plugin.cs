@@ -2,6 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Archipendium.Configuration;
 using Archipendium.Core;
 using Archipendium.Core.Hosting;
 using Dalamud.Plugin;
@@ -14,7 +15,10 @@ namespace Archipendium;
 /// </summary>
 public class Plugin : IDalamudPlugin
 {
-    private readonly DalamudApplication _app;
+    /// <summary>
+    /// Gets or sets the current instance of the Dalamud application used by the plugin framework.
+    /// </summary>
+    public static DalamudApplication App { get; private set; } = default!;
 
     /// <summary>
     /// Initializes a new instance of the Plugin class using the specified Dalamud plugin interface.
@@ -24,18 +28,19 @@ public class Plugin : IDalamudPlugin
     {
         var builder = DalamudApplication.CreateBuilder(pluginInterface);
 
-        builder.ConfigureCore();
+        builder.ConfigureCore()
+            .ConfigureConfiguration();
 
-        _app = builder.Build();
+        App = builder.Build();
 
-        _app.Start();
+        App.Start();
     }
 
     /// <inheritdoc/>
     public void Dispose()
     {
-        _app.Stop();
-        _app.Dispose();
+        App.Stop();
+        App.Dispose();
 
         GC.SuppressFinalize(this);
     }

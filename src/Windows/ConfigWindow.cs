@@ -20,6 +20,7 @@ public class ConfigWindow : Window
     /// <summary>
     /// Initializes a new instance of the ConfigWindow.
     /// </summary>
+    /// <param name="config">The configuration options.</param>
     public ConfigWindow(IOptions<Configuration> config) : base("Archipendium Config")
     {
         Flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;

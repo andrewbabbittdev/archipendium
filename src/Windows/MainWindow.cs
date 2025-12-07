@@ -38,10 +38,14 @@ public class MainWindow : Window
     }
 
     /// <inheritdoc/>
+    public override bool DrawConditions()
+    {
+        return !_archipelago.IsConnected;
+    }
+
+    /// <inheritdoc/>
     public override void Draw()
     {
-        IsOpen = !_archipelago.IsConnected;
-
         ImGui.NewLine();
         ImGui.Indent(40);
 

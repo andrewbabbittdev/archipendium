@@ -6,13 +6,13 @@ using Dalamud.Configuration;
 using Dalamud.Plugin;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Archipendium.Configuration;
+namespace Archipendium.Core;
 
 /// <summary>
 /// Represents the configuration settings for the plugin state.
 /// </summary>
 [Serializable]
-public class AppConfiguration : IPluginConfiguration
+public class Configuration : IPluginConfiguration
 {
     /// <summary>
     /// Gets or sets the version number associated with the current configuration.

@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Core.Hosting.Logging;
+using Archipendium.Core.Hosting.Windowing;
+using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Microsoft.Extensions.Configuration;
@@ -52,6 +54,8 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
         ApplyDefaultAppConfiguration(_hostApplicationBuilder, _hostApplicationBuilder.Configuration, pluginInterface);
         AddDefaultServices(_hostApplicationBuilder, _hostApplicationBuilder.Services);
 
+        _hostApplicationBuilder.Services.AddHostedService<WindowManager>();
+
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface);
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IPluginLog>());
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IChatGui>());
@@ -61,6 +65,22 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
     public void ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
     {
         _hostApplicationBuilder.ConfigureContainer(factory, configure);
+    }
+
+    /// <summary>
+    /// Registers all window in the assembly containing the specified type.
+    /// </summary>
+    /// <typeparam name="TAssembly">A type from the assembly whose Window-derived classes will be registered.</typeparam>
+    public void AddWindows<TAssembly>()
+    {
+        var windows = typeof(TAssembly).Assembly
+            .GetTypes()
+            .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(Window)));
+
+        foreach (var window in windows)
+        {
+            _hostApplicationBuilder.Services.AddSingleton(typeof(Window), window);
+        }
     }
 
     /// <summary>

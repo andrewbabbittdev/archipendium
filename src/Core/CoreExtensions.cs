@@ -20,13 +20,21 @@ public static class CoreExtensions
     /// <returns>The same instance of <paramref name="builder"/> with core services configured.</returns>
     public static DalamudApplicationBuilder ConfigureCore(this DalamudApplicationBuilder builder)
     {
-        return builder.ConfigureConfiguration();
+        return builder.ConfigureConfiguration()
+            .ConfigureWindowing();
     }
 
     private static DalamudApplicationBuilder ConfigureConfiguration(this DalamudApplicationBuilder builder)
     {
         builder.Services.Configure<Configuration>(builder.Configuration);
         builder.Services.AddSingleton<IOptionsMonitor<Configuration>, OptionsMonitor<Configuration>>();
+
+        return builder;
+    }
+
+    private static DalamudApplicationBuilder ConfigureWindowing(this DalamudApplicationBuilder builder)
+    {
+        builder.AddWindows<Plugin>();
 
         return builder;
     }

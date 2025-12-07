@@ -46,6 +46,8 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
             EnvironmentName = pluginInterface.IsDev ? Environments.Development : Environments.Production
         });
 
+        _hostApplicationBuilder.Services.AddSingleton(pluginInterface);
+        _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IPluginLog>());
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IChatGui>());
     }
 

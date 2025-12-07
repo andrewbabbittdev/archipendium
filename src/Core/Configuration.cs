@@ -45,14 +45,14 @@ public class Configuration : IPluginConfiguration
     public bool DisplayJoinLeaveMessages { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether item received messages should be displayed to the user.
-    /// </summary>
-    public bool DisplayItemReceivedMessages { get; set; } = true;
-
-    /// <summary>
     /// Gets or sets a value indicating whether item sent messages should be displayed to the user.
     /// </summary>
     public bool DisplayItemSentMessages { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether item received messages should be displayed to the user.
+    /// </summary>
+    public bool DisplayItemReceivedMessages { get; set; } = true;
 
     /// <summary>
     /// Saves the current configuration to persistent storage.

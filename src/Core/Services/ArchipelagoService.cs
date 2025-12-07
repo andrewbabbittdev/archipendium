@@ -4,15 +4,18 @@
 
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Dalamud.Plugin.Services;
+using Microsoft.Extensions.Options;
 
 namespace Archipendium.Core.Services;
 
 /// <summary>
 /// Provides functionality for connecting to and interacting with an Archipelago multiworld server, including managing connection state and hint points for the user.
 /// </summary>
+/// <param name="config">The configuration options.</param>
 /// <param name="chatGui">The chat interface used to display messages and interact with users.</param>
-public class ArchipelagoService(IChatGui chatGui) : IDisposable
+public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui chatGui) : IDisposable
 {
     /// <summary>
     /// Gets a value indicating whether the user is currently connected.
@@ -61,6 +64,8 @@ public class ArchipelagoService(IChatGui chatGui) : IDisposable
             _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].Initialize(0);
             Credits = _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].To<int>();
 
+            _client.MessageLog.OnMessageReceived += OnMessageReceived;
+
             chatGui.Print($"Connected to Archipelago session at {host} as {slot}.", "Archipelago");
         }
         else
@@ -99,6 +104,8 @@ public class ArchipelagoService(IChatGui chatGui) : IDisposable
             }
             catch { }
 
+            _client.MessageLog.OnMessageReceived -= OnMessageReceived;
+
             _client = null;
         }
     }
@@ -109,5 +116,59 @@ public class ArchipelagoService(IChatGui chatGui) : IDisposable
         Disconnect();
 
         GC.SuppressFinalize(this);
+    }
+
+    private void OnMessageReceived(LogMessage message)
+    {
+        if (_client is null)
+        {
+            return;
+        }
+
+        var messageString = string.Empty;
+
+        foreach (var part in message.Parts)
+        {
+            messageString += part.Text;
+        }
+
+        if ((message is ChatLogMessage || message is ServerChatLogMessage) && !config.CurrentValue.DisplayChatMessages)
+        {
+            return;
+        }
+
+        if (message is HintItemSendLogMessage && !config.CurrentValue.DisplayFoundHintMessages && messageString.EndsWith("(found)"))
+        {
+            return;
+        }
+
+        if ((message is JoinLogMessage || message is LeaveLogMessage) && !config.CurrentValue.DisplayJoinLeaveMessages)
+        {
+            return;
+        }
+
+        if (message is ItemSendLogMessage itemMessage)
+        {
+            if (itemMessage.Sender.Name == _client.Players.ActivePlayer.Name)
+            {
+                if (!config.CurrentValue.DisplayItemSentMessages)
+                {
+                    return;
+                }
+            }
+            else if (itemMessage.Receiver.Name == _client.Players.ActivePlayer.Name)
+            {
+                if (!config.CurrentValue.DisplayItemReceivedMessages)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        chatGui.Print(messageString, "Archipelago");
     }
 }

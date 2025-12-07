@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Core.Hosting;
+using Archipendium.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -21,7 +22,8 @@ public static class CoreExtensions
     public static DalamudApplicationBuilder ConfigureCore(this DalamudApplicationBuilder builder)
     {
         return builder.ConfigureConfiguration()
-            .ConfigureWindowing();
+            .ConfigureWindowing()
+            .ConfigureArchipelago();
     }
 
     private static DalamudApplicationBuilder ConfigureConfiguration(this DalamudApplicationBuilder builder)
@@ -35,6 +37,13 @@ public static class CoreExtensions
     private static DalamudApplicationBuilder ConfigureWindowing(this DalamudApplicationBuilder builder)
     {
         builder.AddWindows<Plugin>();
+
+        return builder;
+    }
+
+    private static DalamudApplicationBuilder ConfigureArchipelago(this DalamudApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<ArchipelagoService>();
 
         return builder;
     }

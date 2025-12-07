@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Core.Hosting;
-using Archipendium.Core.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -21,15 +20,7 @@ public static class CoreExtensions
     /// <returns>The same instance of <paramref name="builder"/> with core services configured.</returns>
     public static DalamudApplicationBuilder ConfigureCore(this DalamudApplicationBuilder builder)
     {
-        return builder.ConfigureLogging()
-            .ConfigureConfiguration();
-    }
-
-    private static DalamudApplicationBuilder ConfigureLogging(this DalamudApplicationBuilder builder)
-    {
-        builder.Logging.AddDalamudLogger();
-
-        return builder;
+        return builder.ConfigureConfiguration();
     }
 
     private static DalamudApplicationBuilder ConfigureConfiguration(this DalamudApplicationBuilder builder)

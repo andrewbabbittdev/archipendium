@@ -2,6 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Archipendium.Core.Hosting.Logging;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Microsoft.Extensions.Configuration;
@@ -39,14 +40,17 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
 
     internal DalamudApplicationBuilder(IDalamudPluginInterface pluginInterface)
     {
-        _hostApplicationBuilder = Host.CreateEmptyApplicationBuilder(new()
+        var settings = new HostApplicationBuilderSettings
         {
             ApplicationName = pluginInterface.InternalName,
             ContentRootPath = pluginInterface.AssemblyLocation.DirectoryName,
             EnvironmentName = pluginInterface.IsDev ? Environments.Development : Environments.Production
-        });
+        };
 
-        _hostApplicationBuilder.Configuration.AddJsonFile(pluginInterface.ConfigFile.FullName, true, true);
+        _hostApplicationBuilder = Host.CreateEmptyApplicationBuilder(settings);
+
+        ApplyDefaultAppConfiguration(_hostApplicationBuilder, _hostApplicationBuilder.Configuration, pluginInterface);
+        AddDefaultServices(_hostApplicationBuilder, _hostApplicationBuilder.Services);
 
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface);
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IPluginLog>());
@@ -66,5 +70,35 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
     public DalamudApplication Build()
     {
         return new(_hostApplicationBuilder.Build());
+    }
+
+    private static void ApplyDefaultAppConfiguration(HostApplicationBuilder builder, IConfigurationBuilder appConfigBuilder, IDalamudPluginInterface pluginInterface)
+    {
+        appConfigBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile(pluginInterface.ConfigFile.FullName, optional: true, reloadOnChange: true);
+    }
+
+    private static void AddDefaultServices(IHostApplicationBuilder builder, IServiceCollection services)
+    {
+        services.AddLogging(logging =>
+        {
+            logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+
+            logging.AddDalamudLogger();
+
+            logging.Configure(options =>
+            {
+                options.ActivityTrackingOptions =
+                    ActivityTrackingOptions.SpanId |
+                    ActivityTrackingOptions.TraceId |
+                    ActivityTrackingOptions.ParentId;
+            });
+        });
+
+        services.AddMetrics(metrics =>
+        {
+            metrics.AddConfiguration(builder.Configuration.GetSection("Metrics"));
+        });
     }
 }

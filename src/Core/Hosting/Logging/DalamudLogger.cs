@@ -11,7 +11,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Archipendium.Core.Logging;
+namespace Archipendium.Core.Hosting.Logging;
 
 /// <summary>
 /// Provides an implementation of <see cref="ILogger"/> that logs messages using the Dalamud plugin logging infrastructure.

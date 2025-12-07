@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace Archipendium.Core.Logging;
+namespace Archipendium.Core.Hosting.Logging;
 
 /// <summary>
 /// Provides extension methods for configuring logging to use the Dalamud logging infrastructure within an plugin's logging pipeline.

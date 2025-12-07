@@ -7,7 +7,7 @@ using Dalamud.Plugin.Services;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 
-namespace Archipendium.Core.Logging;
+namespace Archipendium.Core.Hosting.Logging;
 
 /// <summary>
 /// Provides an implementation of <see cref="ILoggerProvider"/> that creates loggers which write to the Dalamud plugin log system.

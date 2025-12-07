@@ -8,7 +8,7 @@ using Archipendium.Core.Logging;
 namespace Archipendium.Core;
 
 /// <summary>
-/// Provides extension methods for configuring core services in a Archipendium.
+/// Provides extension methods for configuring core services in Archipendium.
 /// </summary>
 public static class CoreExtensions
 {

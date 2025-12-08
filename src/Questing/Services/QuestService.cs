@@ -94,7 +94,7 @@ public partial class QuestService(IHostEnvironment hostEnvironment, IOptionsMoni
     private void ProcessQuestEntity(QuestEntity entity)
     {
         var questConfig = config.CurrentValue.Items
-            .FirstOrDefault(i => i.Name == entity.Name);
+            .FirstOrDefault(i => i.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
 
         if (questConfig is not null)
         {

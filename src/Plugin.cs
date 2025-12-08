@@ -4,6 +4,7 @@
 
 using Archipendium.Core;
 using Archipendium.Core.Hosting;
+using Archipendium.Questing;
 using Dalamud.Plugin;
 
 namespace Archipendium;
@@ -27,7 +28,8 @@ public class Plugin : IDalamudPlugin
     {
         var builder = DalamudApplication.CreateBuilder(pluginInterface);
 
-        builder.ConfigureCore();
+        builder.ConfigureCore()
+            .ConfigureQuesting();
 
         App = builder.Build();
 

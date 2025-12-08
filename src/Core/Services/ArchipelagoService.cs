@@ -144,6 +144,19 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     }
 
     /// <summary>
+    /// Adds the specified number of tokens to the current balance.
+    /// </summary>
+    /// <param name="amount">The number of tokens to deposit. Must be a non-negative integer.</param>
+    public void DepositTokens(int amount)
+    {
+        if (_client is not null)
+        {
+            Tokens += amount;
+            _client.DataStorage[Scope.Slot, "ArchipendiumTokens"] = Tokens;
+        }
+    }
+
+    /// <summary>
     /// Requests the purchase of a hint for a randomly selected missing location that has not yet been hinted.
     /// </summary>
     public void PurchaseHint()

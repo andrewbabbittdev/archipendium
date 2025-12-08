@@ -1,7 +1,7 @@
 Questing:
   Items:
     - Name: "MGP"
-      Multiplier: 0.5
+      Multiplier: 0.25
     - Name: "Bicolor Gemstones"
       Multiplier: 30
 

@@ -104,19 +104,21 @@ public class MainWindow : Window
 
     private void RenderSessionPage()
     {
-        var credits = _archipelago.Tokens;
-        ImGui.Text("Archipelago Hint Tokens:");
+        var tokens = _archipelago.Tokens;
+        var tokensString = tokens.ToString("N0");
+        ImGui.Text("Archipelago Tokens:");
         ImGui.BeginDisabled();
-        ImGui.InputInt("##Archipelago Credits:", ref credits);
+        ImGui.InputText("##Archipelago Tokens:", ref tokensString);
         ImGui.EndDisabled();
 
         var hintCost = ArchipelagoService.TokensPerHint;
+        var hintCostString = hintCost.ToString("N0");
         ImGui.Text("Archipelago Hint Price:");
         ImGui.BeginDisabled();
-        ImGui.InputInt("##Archipelago Hint Price:", ref hintCost);
+        ImGui.InputText("##Archipelago Hint Price:", ref hintCostString);
         ImGui.EndDisabled();
 
-        if (credits < hintCost)
+        if (tokens < hintCost)
         {
             ImGui.BeginDisabled();
         }
@@ -126,7 +128,7 @@ public class MainWindow : Window
             Task.Run(_archipelago.PurchaseHint);
         }
 
-        if (credits < hintCost)
+        if (tokens < hintCost)
         {
             ImGui.EndDisabled();
         }

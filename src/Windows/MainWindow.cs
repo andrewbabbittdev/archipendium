@@ -116,7 +116,10 @@ public class MainWindow : Window
         ImGui.InputInt("##Archipelago Hint Price:", ref hintCost);
         ImGui.EndDisabled();
 
-        ImGui.Button("Purchase Hint");
+        if (ImGui.Button("Purchase Hint"))
+        {
+            Task.Run(_archipelago.PurchaseHint);
+        }
 
         ImGui.SameLine();
         ImGui.Indent(148);

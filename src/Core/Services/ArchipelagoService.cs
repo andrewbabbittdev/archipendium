@@ -6,7 +6,9 @@ using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
+using Archipelago.MultiClient.Net.Packets;
 using Dalamud.Plugin.Services;
+using Lumina.Text;
 using Microsoft.Extensions.Options;
 
 namespace Archipendium.Core.Services;
@@ -16,7 +18,8 @@ namespace Archipendium.Core.Services;
 /// </summary>
 /// <param name="config">The configuration options.</param>
 /// <param name="chatGui">The chat interface used to display messages and interact with users.</param>
-public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui chatGui) : IDisposable
+/// <param name="seStringEvaluator">The evaluator for processing SeString formatted messages.</param>
+public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui chatGui, ISeStringEvaluator seStringEvaluator) : IDisposable
 {
     /// <summary>
     /// Gets a value indicating whether the user is currently connected.
@@ -34,6 +37,7 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     public const int TokensPerHint = 1000;
 
     private ArchipelagoSession? _client;
+    private List<long> _knownHints = [];
 
     /// <summary>
     /// Attempts to establish a connection to an Archipelago server using the specified host, slot, and optional
@@ -123,6 +127,31 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
         }
     }
 
+    /// <summary>
+    /// Requests the purchase of a hint for a randomly selected missing location that has not yet been hinted.
+    /// </summary>
+    public void PurchaseHint()
+    {
+        if (_client is not null)
+        {
+            var missingLocations = _client.Locations.AllMissingLocations
+                .Where(l => !_knownHints.Contains(l))
+                .ToList();
+
+            if (missingLocations.Count > 0)
+            {
+                var index = Random.Shared.Next(missingLocations.Count);
+                var locationId = missingLocations[index];
+
+                _client.Socket.SendPacket(new LocationScoutsPacket()
+                {
+                    Locations = [locationId],
+                    CreateAsHint = 1
+                });
+            }
+        }
+    }
+
     /// <inheritdoc/>
     public void Dispose()
     {
@@ -145,11 +174,13 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             return;
         }
 
-        var messageString = string.Empty;
+        var messageBuilder = new SeStringBuilder();
 
         foreach (var part in message.Parts)
         {
-            messageString += part.Text;
+            messageBuilder.PushColorRgba(part.Color.R, part.Color.G, part.Color.B, 1)
+                .Append(part.Text)
+                .PopColor();
         }
 
         if ((message is ChatLogMessage || message is ServerChatLogMessage) && !config.CurrentValue.DisplayChatMessages)
@@ -157,9 +188,14 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             return;
         }
 
-        if (message is HintItemSendLogMessage && !config.CurrentValue.DisplayFoundHintMessages && messageString.EndsWith("(found)"))
+        if (message is HintItemSendLogMessage && !config.CurrentValue.DisplayFoundHintMessages)
         {
-            return;
+            var messageString = messageBuilder.ToString() ?? string.Empty;
+
+            if (messageString.EndsWith("(found)"))
+            {
+                return;
+            }
         }
 
         if ((message is JoinLogMessage || message is LeaveLogMessage) && !config.CurrentValue.DisplayJoinLeaveMessages)
@@ -189,14 +225,16 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             }
         }
 
-        chatGui.Print(messageString, "Archipelago");
+        var result = seStringEvaluator.Evaluate(messageBuilder.ToReadOnlySeString());
+
+        chatGui.Print(result, "Archipelago");
     }
 
     private void OnHintsUpdated(Hint[] hints)
     {
-        foreach (var hint in hints)
+        if (_client is not null)
         {
-            chatGui.Print(hint.LocationId.ToString());
+            _knownHints = [.. hints.Where(h => h.FindingPlayer == _client.ConnectionInfo.Slot).Select(h => h.LocationId)];
         }
     }
 }

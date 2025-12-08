@@ -58,6 +58,7 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
 
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface);
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IPluginLog>());
+        _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<ISeStringEvaluator>());
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IChatGui>());
     }
 

@@ -107,7 +107,7 @@ public class MainWindow : Window
         var credits = _archipelago.Tokens;
         ImGui.Text("Archipelago Hint Tokens:");
         ImGui.BeginDisabled();
-        ImGui.InputInt("##Archipelago Hint Credits:", ref credits);
+        ImGui.InputInt("##Archipelago Credits:", ref credits);
         ImGui.EndDisabled();
 
         var hintCost = ArchipelagoService.TokensPerHint;
@@ -116,9 +116,19 @@ public class MainWindow : Window
         ImGui.InputInt("##Archipelago Hint Price:", ref hintCost);
         ImGui.EndDisabled();
 
+        if (credits < hintCost)
+        {
+            ImGui.BeginDisabled();
+        }
+
         if (ImGui.Button("Purchase Hint"))
         {
             Task.Run(_archipelago.PurchaseHint);
+        }
+
+        if (credits < hintCost)
+        {
+            ImGui.EndDisabled();
         }
 
         ImGui.SameLine();

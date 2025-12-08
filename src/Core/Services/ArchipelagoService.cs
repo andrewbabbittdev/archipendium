@@ -157,6 +157,19 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     }
 
     /// <summary>
+    /// Removes the specified number of tokens from the current balance.
+    /// </summary>
+    /// <param name="amount">The number of tokens to withdraw. Must be a non-negative integer.</param>
+    public void WithdrawTokens(int amount)
+    {
+        if (_client is not null)
+        {
+            Tokens -= amount;
+            _client.DataStorage[Scope.Slot, "ArchipendiumTokens"] = Tokens;
+        }
+    }
+
+    /// <summary>
     /// Requests the purchase of a hint for a randomly selected missing location that has not yet been hinted.
     /// </summary>
     public void PurchaseHint()
@@ -171,6 +184,8 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             {
                 var index = Random.Shared.Next(missingLocations.Count);
                 var locationId = missingLocations[index];
+
+                WithdrawTokens(TokensPerHint);
 
                 _client.Socket.SendPacket(new LocationScoutsPacket()
                 {

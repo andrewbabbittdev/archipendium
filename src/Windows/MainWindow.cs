@@ -104,13 +104,13 @@ public class MainWindow : Window
 
     private void RenderSessionPage()
     {
-        var credits = _archipelago.Credits;
-        ImGui.Text("Archipelago Hint Credits:");
+        var credits = _archipelago.Tokens;
+        ImGui.Text("Archipelago Hint Tokens:");
         ImGui.BeginDisabled();
         ImGui.InputInt("##Archipelago Hint Credits:", ref credits);
         ImGui.EndDisabled();
 
-        var hintCost = ArchipelagoService.CreditsPerHint;
+        var hintCost = ArchipelagoService.TokensPerHint;
         ImGui.Text("Archipelago Hint Price:");
         ImGui.BeginDisabled();
         ImGui.InputInt("##Archipelago Hint Price:", ref hintCost);

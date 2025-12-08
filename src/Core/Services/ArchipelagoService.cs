@@ -24,14 +24,14 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     public bool IsConnected => _client is not null && _client.Socket.Connected;
 
     /// <summary>
-    /// Gets the number of credits currently available to the user.
+    /// Gets the number of tokens currently available to the user.
     /// </summary>
-    public int Credits { get; private set; }
+    public int Tokens { get; private set; }
 
     /// <summary>
-    /// Represents the number of credits required to obtain a single hint.
+    /// Represents the number of tokens required to obtain a single hint.
     /// </summary>
-    public const int CreditsPerHint = 1000;
+    public const int TokensPerHint = 1000;
 
     private ArchipelagoSession? _client;
 
@@ -67,8 +67,8 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
 
         if (result.Successful)
         {
-            _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].Initialize(0);
-            Credits = _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].To<int>();
+            _client.DataStorage[Scope.Slot, "ArchipendiumTokens"].Initialize(0);
+            Tokens = _client.DataStorage[Scope.Slot, "ArchipendiumTokens"].To<int>();
 
             _client.MessageLog.OnMessageReceived += OnMessageReceived;
 

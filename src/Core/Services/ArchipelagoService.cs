@@ -5,6 +5,7 @@
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.Models;
 using Dalamud.Plugin.Services;
 using Microsoft.Extensions.Options;
 
@@ -26,6 +27,11 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     /// Gets the number of credits currently available to the user.
     /// </summary>
     public int Credits { get; private set; }
+
+    /// <summary>
+    /// Represents the number of credits required to obtain a single hint.
+    /// </summary>
+    public const int CreditsPerHint = 1000;
 
     private ArchipelagoSession? _client;
 
@@ -65,6 +71,8 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             Credits = _client.DataStorage[Scope.Slot, "ArchipendiumCredits"].To<int>();
 
             _client.MessageLog.OnMessageReceived += OnMessageReceived;
+
+            _client.Hints.TrackHints(OnHintsUpdated, true);
 
             chatGui.Print($"Connected to Archipelago session at {host} as {slot}.", "Archipelago");
         }
@@ -170,5 +178,13 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
         }
 
         chatGui.Print(messageString, "Archipelago");
+    }
+
+    private void OnHintsUpdated(Hint[] hints)
+    {
+        foreach (var hint in hints)
+        {
+            chatGui.Print(hint.LocationId.ToString());
+        }
     }
 }

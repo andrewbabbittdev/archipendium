@@ -5,6 +5,8 @@
 using Archipendium.Core;
 using Archipendium.Core.Services;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using Microsoft.Extensions.Options;
 using System.Numerics;
@@ -21,13 +23,14 @@ public class MainWindow : Window
 
     private string _password = string.Empty;
     private bool _isConnecting;
+    private bool _isDisconnecting;
 
     /// <summary>
     /// Initializes a new instance of the MainWindow.
     /// </summary>
     /// <param name="config">The configuration options.</param>
     /// <param name="archipelago">The Archipelago service.</param>
-    public MainWindow(IOptions<Configuration> config, ArchipelagoService archipelago) : base("Archipendium Connect")
+    public MainWindow(IOptions<Configuration> config, ArchipelagoService archipelago) : base("Archipendium")
     {
         Flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
         Size = new Vector2(272, 250);
@@ -38,33 +41,43 @@ public class MainWindow : Window
     }
 
     /// <inheritdoc/>
-    public override bool DrawConditions()
-    {
-        return !_archipelago.IsConnected;
-    }
-
-    /// <inheritdoc/>
     public override void Draw()
     {
         ImGui.NewLine();
         ImGui.Indent(40);
 
+        if (!_archipelago.IsConnected)
+        {
+            Size = new Vector2(272, 250);
+            RenderConnectPage();
+        }
+        else
+        {
+            Size = new Vector2(272, 202);
+            RenderSessionPage();
+        }
+
+        ImGui.Unindent(40);
+    }
+
+    private void RenderConnectPage()
+    {
         var host = _config.Value.Host;
-        ImGui.Text("Archipelago host:");
-        if (ImGui.InputText("##Archipelago host:", ref host))
+        ImGui.Text("Archipelago Host:");
+        if (ImGui.InputText("##Archipelago Host:", ref host))
         {
             _config.Value.Host = host;
         }
 
         var slot = _config.Value.Slot;
-        ImGui.Text("Slot name:");
-        if (ImGui.InputText("##Slot name:", ref slot))
+        ImGui.Text("Slot Name:");
+        if (ImGui.InputText("##Slot Name:", ref slot))
         {
             _config.Value.Slot = slot;
         }
 
-        ImGui.Text("Password (optional):");
-        ImGui.InputText("##Password (optional):", ref _password, flags: ImGuiInputTextFlags.Password);
+        ImGui.Text("Password:");
+        ImGui.InputText("##Password:", ref _password, flags: ImGuiInputTextFlags.Password);
 
         if (_isConnecting)
         {
@@ -87,7 +100,53 @@ public class MainWindow : Window
         {
             ImGui.EndDisabled();
         }
+    }
 
-        ImGui.Unindent(40);
+    private void RenderSessionPage()
+    {
+        var credits = _archipelago.Credits;
+        ImGui.Text("Archipelago Hint Credits:");
+        ImGui.BeginDisabled();
+        ImGui.InputInt("##Archipelago Hint Credits:", ref credits);
+        ImGui.EndDisabled();
+
+        var hintCost = ArchipelagoService.CreditsPerHint;
+        ImGui.Text("Archipelago Hint Price:");
+        ImGui.BeginDisabled();
+        ImGui.InputInt("##Archipelago Hint Price:", ref hintCost);
+        ImGui.EndDisabled();
+
+        ImGui.Button("Purchase Hint");
+
+        ImGui.SameLine();
+        ImGui.Indent(148);
+
+        var disconnectButtonColor = new Vector4(0xD9, 0x53, 0x4F, 0xFF) / 0xFF;
+
+        if (_isDisconnecting)
+        {
+            ImGui.BeginDisabled();
+        }
+
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.PowerOff, defaultColor: disconnectButtonColor, hoveredColor: disconnectButtonColor))
+        {
+            _isDisconnecting = true;
+
+            Task.Run(() =>
+            {
+                _archipelago.Disconnect();
+                _isDisconnecting = false;
+            });
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Disconnect");
+        }
+
+        if (_isDisconnecting)
+        {
+            ImGui.EndDisabled();
+        }
     }
 }

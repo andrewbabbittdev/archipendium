@@ -23,6 +23,7 @@ public static class CoreExtensions
     {
         return builder.ConfigureConfiguration()
             .ConfigureWindowing()
+            .ConfigureCommands()
             .ConfigureArchipelago();
     }
 
@@ -37,6 +38,13 @@ public static class CoreExtensions
     private static DalamudApplicationBuilder ConfigureWindowing(this DalamudApplicationBuilder builder)
     {
         builder.AddWindows<Plugin>();
+
+        return builder;
+    }
+
+    private static DalamudApplicationBuilder ConfigureCommands(this DalamudApplicationBuilder builder)
+    {
+        builder.AddCommands<Plugin>();
 
         return builder;
     }

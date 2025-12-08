@@ -2,6 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Archipendium.Core.Hosting.Commands;
 using Archipendium.Core.Hosting.Logging;
 using Archipendium.Core.Hosting.Windowing;
 using Dalamud.Interface.Windowing;
@@ -55,10 +56,12 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
         AddDefaultServices(_hostApplicationBuilder, _hostApplicationBuilder.Services);
 
         _hostApplicationBuilder.Services.AddHostedService<WindowManager>();
+        _hostApplicationBuilder.Services.AddHostedService<CommandManager>();
 
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface);
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IPluginLog>());
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<ISeStringEvaluator>());
+        _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<ICommandManager>());
         _hostApplicationBuilder.Services.AddSingleton(pluginInterface.GetRequiredService<IChatGui>());
     }
 
@@ -69,7 +72,7 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
     }
 
     /// <summary>
-    /// Registers all window in the assembly containing the specified type.
+    /// Registers all windows in the assembly containing the specified type.
     /// </summary>
     /// <typeparam name="TAssembly">A type from the assembly whose Window-derived classes will be registered.</typeparam>
     public void AddWindows<TAssembly>()
@@ -82,6 +85,23 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
         {
             _hostApplicationBuilder.Services.AddSingleton(window);
             _hostApplicationBuilder.Services.AddSingleton(typeof(Window), services => services.GetRequiredService(window));
+        }
+    }
+
+    /// <summary>
+    /// Registers all commands in the assembly containing the specified type.
+    /// </summary>
+    /// <typeparam name="TAssembly">A type from the assembly whose Command-derived classes will be registered.</typeparam>
+    public void AddCommands<TAssembly>()
+    {
+        var commands = typeof(TAssembly).Assembly
+            .GetTypes()
+            .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(Command)));
+
+        foreach (var command in commands)
+        {
+            _hostApplicationBuilder.Services.AddSingleton(command);
+            _hostApplicationBuilder.Services.AddSingleton(typeof(Command), services => services.GetRequiredService(command));
         }
     }
 

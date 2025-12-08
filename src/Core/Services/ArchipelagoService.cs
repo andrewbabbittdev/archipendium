@@ -128,6 +128,15 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     }
 
     /// <summary>
+    /// Sends a chat message.
+    /// </summary>
+    /// <param name="message">The text of the message to send. Cannot be null or empty.</param>
+    public void SendChatMessage(string message)
+    {
+        _client?.Say(message);
+    }
+
+    /// <summary>
     /// Requests the purchase of a hint for a randomly selected missing location that has not yet been hinted.
     /// </summary>
     public void PurchaseHint()

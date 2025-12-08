@@ -2,3 +2,18 @@ Questing:
   Items:
     - Name: "MGP"
       Multiplier: 5
+    - Name: "Bicolor Gemstones"
+      Multiplier: 30
+
+    - Name: "Dreadwyrm Totem"
+      Multiplier: 3000
+    - Name: "Ultima Totem"
+      Multiplier: 3000
+    - Name: "Colossus Totem"
+      Multiplier: 3000
+    - Name: "Dragonsong Totem"
+      Multiplier: 3000
+    - Name: "Omega Totem"
+      Multiplier: 3000
+    - Name: "Oracle Totem"
+      Multiplier: 3000

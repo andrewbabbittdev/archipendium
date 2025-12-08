@@ -133,7 +133,14 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     /// <param name="message">The text of the message to send. Cannot be null or empty.</param>
     public void SendChatMessage(string message)
     {
-        _client?.Say(message);
+        if (_client is null)
+        {
+            chatGui.PrintError("You are not connected to a server.", "Archipelago");
+        }
+        else
+        {
+            _client.Say(message);
+        }
     }
 
     /// <summary>

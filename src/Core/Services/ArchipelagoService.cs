@@ -102,6 +102,7 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             chatGui.PrintError(errorMessage, "Archipelago");
 
             _client = null;
+            _knownHints.Clear();
         }
     }
 
@@ -122,6 +123,7 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             catch { }
 
             _client = null;
+            _knownHints.Clear();
 
             IsConnected = false;
         }

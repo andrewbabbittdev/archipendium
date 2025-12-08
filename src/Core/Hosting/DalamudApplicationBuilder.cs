@@ -116,8 +116,8 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
 
     private static void ApplyDefaultAppConfiguration(HostApplicationBuilder builder, IConfigurationBuilder appConfigBuilder, IDalamudPluginInterface pluginInterface)
     {
-        appConfigBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+        appConfigBuilder.AddYamlFile("appsettings.yaml", optional: true, reloadOnChange: true)
+            .AddYamlFile($"appsettings.{builder.Environment.EnvironmentName}.yaml", optional: true, reloadOnChange: true)
             .AddJsonFile(pluginInterface.ConfigFile.FullName, optional: true, reloadOnChange: true);
     }
 

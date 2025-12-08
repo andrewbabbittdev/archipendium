@@ -47,7 +47,7 @@ public class Configuration : IPluginConfiguration
     /// <summary>
     /// Gets or sets a value indicating whether item sent messages should be displayed to the user.
     /// </summary>
-    public bool DisplayItemSentMessages { get; set; }
+    public bool DisplayItemSentMessages { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether item received messages should be displayed to the user.

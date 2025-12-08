@@ -21,7 +21,7 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     /// <summary>
     /// Gets a value indicating whether the user is currently connected.
     /// </summary>
-    public bool IsConnected => _client is not null && _client.Socket.Connected;
+    public bool IsConnected { get; private set; }
 
     /// <summary>
     /// Gets the number of tokens currently available to the user.
@@ -70,9 +70,11 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
             _client.DataStorage[Scope.Slot, "ArchipendiumTokens"].Initialize(0);
             Tokens = _client.DataStorage[Scope.Slot, "ArchipendiumTokens"].To<int>();
 
+            _client.Socket.ErrorReceived += OnSocketErrorReceived;
             _client.MessageLog.OnMessageReceived += OnMessageReceived;
-
             _client.Hints.TrackHints(OnHintsUpdated, true);
+
+            IsConnected = true;
 
             chatGui.Print($"Connected to Archipelago session at {host} as {slot}.", "Archipelago");
         }
@@ -106,15 +108,18 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
     {
         if (_client is not null)
         {
+            _client.Socket.ErrorReceived -= OnSocketErrorReceived;
+            _client.MessageLog.OnMessageReceived -= OnMessageReceived;
+
             try
             {
                 _client.Socket.DisconnectAsync().GetAwaiter().GetResult();
             }
             catch { }
 
-            _client.MessageLog.OnMessageReceived -= OnMessageReceived;
-
             _client = null;
+
+            IsConnected = false;
         }
     }
 
@@ -124,6 +129,13 @@ public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui 
         Disconnect();
 
         GC.SuppressFinalize(this);
+    }
+
+    private void OnSocketErrorReceived(Exception e, string message)
+    {
+        Task.Run(Disconnect);
+
+        chatGui.PrintError("Connection lost, please sign back in.", "Archipelago");
     }
 
     private void OnMessageReceived(LogMessage message)

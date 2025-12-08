@@ -79,7 +79,8 @@ public sealed class DalamudApplicationBuilder : IHostApplicationBuilder
 
         foreach (var window in windows)
         {
-            _hostApplicationBuilder.Services.AddSingleton(typeof(Window), window);
+            _hostApplicationBuilder.Services.AddSingleton(window);
+            _hostApplicationBuilder.Services.AddSingleton(typeof(Window), services => services.GetRequiredService(window));
         }
     }
 

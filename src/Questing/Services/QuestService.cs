@@ -17,17 +17,45 @@ namespace Archipendium.Questing.Services;
 /// <summary>
 /// Provides background quest tracking and chat message parsing services for the application.
 /// </summary>
-/// <param name="hostEnvironment">The host environment in which the application is running.</param>
-/// <param name="config">The configuration options for questing features.</param>
-/// <param name="archipelagoService">The Archipelago service used for item and quest management.</param>
-/// <param name="chatGui">The chat interface used to subscribe to and handle chat messages relevant to quest tracking.</param>
-public partial class QuestService(IHostEnvironment hostEnvironment, IOptionsMonitor<QuestingConfig> config, ArchipelagoService archipelagoService, IChatGui chatGui) : IHostedService
+public partial class QuestService : IHostedService, IDisposable
 {
+    private readonly IHostEnvironment _hostEnvironment;
+    private readonly IOptionsMonitor<QuestingConfig> _config;
+    private readonly ArchipelagoService _archipelagoService;
+    private readonly IChatGui _chatGui;
+    private readonly System.Timers.Timer _transactionTimer;
+
     private readonly int[] _acceptedChatTypes =
     [
         2110, // General Items
         2238 // MGP
     ];
+
+    private int _transactionTokens;
+
+    /// <summary>
+    /// Initializes a new instance of the QuestService class.
+    /// </summary>
+    /// <param name="hostEnvironment">The host environment in which the application is running.</param>
+    /// <param name="config">The configuration options for questing features.</param>
+    /// <param name="archipelagoService">The Archipelago service used for item and quest management.</param>
+    /// <param name="chatGui">The chat interface used to subscribe to and handle chat messages relevant to quest tracking.</param>
+    public QuestService(IHostEnvironment hostEnvironment, IOptionsMonitor<QuestingConfig> config, ArchipelagoService archipelagoService, IChatGui chatGui)
+    {
+        _hostEnvironment = hostEnvironment;
+        _config = config;
+        _archipelagoService = archipelagoService;
+        _chatGui = chatGui;
+
+        _transactionTimer = new(TimeSpan.FromMilliseconds(500))
+        {
+            Enabled = false,
+            AutoReset = false
+        };
+
+        _chatGui.ChatMessage += OnChatMessage;
+        _transactionTimer.Elapsed += TransactionTimerElapsed;
+    }
 
     [GeneratedRegex("[^\u0000-\u007F]+")]
     private static partial Regex FilterRegex();
@@ -38,22 +66,30 @@ public partial class QuestService(IHostEnvironment hostEnvironment, IOptionsMoni
     /// <inheritdoc/>
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        chatGui.ChatMessage += OnChatMessage;
-
         return Task.CompletedTask;
     }
 
     /// <inheritdoc/>
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        chatGui.ChatMessage -= OnChatMessage;
-
         return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _chatGui.ChatMessage -= OnChatMessage;
+
+        _transactionTimer.Elapsed -= TransactionTimerElapsed;
+        _transactionTimer.Enabled = false;
+        _transactionTimer.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 
     private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
     {
-        if (archipelagoService.IsConnected && message.TextValue.StartsWith("You obtain"))
+        if (_archipelagoService.IsConnected && message.TextValue.StartsWith("You obtain"))
         {
             if (_acceptedChatTypes.Contains((int)type))
             {
@@ -75,17 +111,17 @@ public partial class QuestService(IHostEnvironment hostEnvironment, IOptionsMoni
                 }
                 else
                 {
-                    if (hostEnvironment.IsDevelopment())
+                    if (_hostEnvironment.IsDevelopment())
                     {
-                        chatGui.PrintError($"[Obtained Item Match Fail]: {sanitizedMessage}", "Archipendium");
+                        _chatGui.PrintError($"[Obtained Item Match Fail]: {sanitizedMessage}", "Archipendium");
                     }
                 }
             }
             else
             {
-                if (hostEnvironment.IsDevelopment())
+                if (_hostEnvironment.IsDevelopment())
                 {
-                    chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
+                    _chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
                 }
             }
         }
@@ -93,24 +129,34 @@ public partial class QuestService(IHostEnvironment hostEnvironment, IOptionsMoni
 
     private void ProcessQuestEntity(QuestEntity entity)
     {
-        var questConfig = config.CurrentValue.Items
+        var questConfig = _config.CurrentValue.Items
             .FirstOrDefault(i => i.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
 
         if (questConfig is not null)
         {
-            var tokens = (int)Math.Round(entity.Count * questConfig.Multiplier);
+            _transactionTokens += (int)Math.Round(entity.Count * questConfig.Multiplier);
 
-            archipelagoService.DepositTokens(tokens);
-
-            var message = new SeStringBuilder()
-                .Append($"You obtain {tokens:N0} archipelago tokens.")
-                .Build();
-
-            chatGui.Print(new XivChatEntry()
+            if (!_transactionTimer.Enabled)
             {
-                Type = (XivChatType)2238,
-                Message = message
-            });
+                _transactionTimer.Start();
+            }
         }
+    }
+
+    private void TransactionTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        _archipelagoService.DepositTokens(_transactionTokens);
+
+        var message = new SeStringBuilder()
+            .Append($"You obtain {_transactionTokens:N0} archipelago tokens.")
+            .Build();
+
+        _chatGui.Print(new XivChatEntry()
+        {
+            Type = (XivChatType)2238,
+            Message = message
+        });
+
+        _transactionTokens = 0;
     }
 }

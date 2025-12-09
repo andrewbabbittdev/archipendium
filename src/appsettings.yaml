@@ -1,10 +1,246 @@
 Questing:
   Items:
+    # Company Seals
+    - Name: "Storm Seals"
+      Multiplier: 0.1
+    - Name: "Flame Seals"
+      Multiplier: 0.1
+    - Name: "Serpent Seals"
+      Multiplier: 0.1
+
+    # Manderville Gold Saucer
     - Name: "MGP"
       Multiplier: 0.25
-    - Name: "Bicolor Gemstones"
-      Multiplier: 30
+    - Name: "MGF"
+      Multiplier: 2
 
+    # Allagan Tomestones
+    - Name: "Allagan Tomestones of Poetics"
+      Multiplier: 1
+    - Name: "Allagan Tomestones of Heliometry"
+      Multiplier: 1
+    - Name: "Allagan Tomestones of Mathematics"
+      Multiplier: 2
+
+    # PvP
+    - Name: "Wolf Marks"
+      Multiplier: 0.8
+    - Name: "Trophy Crystals"
+      Multiplier: 1
+
+    # The Hunt
+    - Name: "Allied Seals"
+      Multiplier: 1
+    - Name: "Centurio Seals"
+      Multiplier: 1
+    - Name: "Sacks of Nuts"
+      Multiplier: 1
+
+    # FATEs
+    - Name: "Bicolor Gemstones"
+      Multiplier: 20
+
+    # Crafters' Scrips
+    - Name: "Purple Crafters' Scrips"
+      Multiplier: 0.5
+    - Name: "Orange Crafters' Scrips"
+      Multiplier: 0.5
+
+    # Gatherers' Scrips
+    - Name: "Purple Gatherers' Scrips"
+      Multiplier: 0.5
+    - Name: "Orange Gatherers' Scrips"
+      Multiplier: 0.5
+
+    # Skybuilders' Scrips
+    - Name: "Skybuilders' Scrips"
+      Multiplier: 1
+
+    # A Realm Reborn Societal Currency
+    - Name: "Steel Amalj'ok"
+      Multiplier: 100
+    - Name: "Sylphic Goldleaf"
+      Multiplier: 100
+    - Name: "Titan Cobaltpiece"
+      Multiplier: 100
+    - Name: "Rainbowtide Psashp"
+      Multiplier: 100
+    - Name: "Ixali Oaknot"
+      Multiplier: 100
+
+    # Heavensward Societal Currency
+    - Name: "Vanu Whitebone"
+      Multiplier: 100
+    - Name: "Black Copper Gil"
+      Multiplier: 100
+    - Name: "Carved Kupo Nut"
+      Multiplier: 100
+
+    # Stormblood Societal Currency
+    - Name: "Kojin Sango"
+      Multiplier: 100
+    - Name: "Ananta Dreamstaff"
+      Multiplier: 100
+    - Name: "Namazu Koban"
+      Multiplier: 100
+
+    # Shadowbringers Societal Currency
+    - Name: "Fae Fancy"
+      Multiplier: 100
+    - Name: "Qitari Compliment"
+      Multiplier: 100
+    - Name: "Hammered Frogment"
+      Multiplier: 100
+
+    # Endwalker Societal Currency
+    - Name: "Arkasodara Pana"
+      Multiplier: 100
+    - Name: "Omicron Omnitoken"
+      Multiplier: 100
+    - Name: "Loporrit Carat"
+      Multiplier: 100
+
+    # Dawntrail Societal Currency
+    - Name: "Pelu Pelplume"
+      Multiplier: 100
+    - Name: "Mamool Ja Nanook"
+      Multiplier: 100
+    - Name: "Yok Huy Ward"
+      Multiplier: 100
+
+    # Faux Hallows
+    - Name: "Faux Leafs"
+      Multiplier: 10
+
+    # Island Sanctuary
+    - Name: "Seafarer's Cowries"
+      Multiplier: 0.5
+    - Name: "Islander's Cowries"
+      Multiplier: 1
+    - Name: "Felicitous Tokens"
+      Multiplier: 2
+
+    # Cosmic Exploration
+    - Name: "Cosmocredits"
+      Multiplier: 0.5
+    - Name: "Lunar Credits"
+      Multiplier: 1
+    - Name: "Phaenna Credits"
+      Multiplier: 1
+    - Name: "Phaenna Exploration Tokens"
+      Multiplier: 10
+
+    # Eureka
+    - Name: "Anemos Crystals"
+      Multiplier: 2
+    - Name: "Protean Crystals"
+      Multiplier: 2
+    - Name: "Pyros Crystals"
+      Multiplier: 2
+    - Name: "Eureka Fragments"
+      Multiplier: 100
+    - Name: "Penthesilea's Flames"
+      Multiplier: 100
+    - Name: "Pazuzu's Feathers"
+      Multiplier: 100
+
+    # Bozja
+    - Name: "Bozjan Clusters"
+      Multiplier: 2
+    - Name: "Bozjan Coins"
+      Multiplier: 100
+
+    # Occult Crescent
+    - Name: "Enlightenment Silver Pieces"
+      Multiplier: 1
+    - Name: "Enlightenment Gold Pieces"
+      Multiplier: 2
+
+    # Endwalker Extreme Trials
+    - Name: "Astral Totem"
+      Multiplier: 250
+    - Name: "Umbral Totem"
+      Multiplier: 250
+    - Name: "Ultimatum Totems"
+      Multiplier: 125
+    - Name: "Windswept Archfiend Totems"
+      Multiplier: 125
+    - Name: "Flamecloaked Archfiend Totems"
+      Multiplier: 125
+    - Name: "Voidcast Archfiend Totems"
+      Multiplier: 125
+    - Name: "Voidvessel Totems"
+      Multiplier: 125
+
+    # Dawntrail Extreme Trials
+    - Name: "Skyruin Totem"
+      Multiplier: 500
+    - Name: "Resilient Totem"
+      Multiplier: 500
+    - Name: "Totems Eternal"
+      Multiplier: 250
+    - Name: "Knight Totem"
+      Multiplier: 500
+    - Name: "Grave Totems"
+      Multiplier: 250
+    - Name: "Guardian Arkveld Certificates"
+      Multiplier: 250
+
+    # Endwalker Savage Raids
+    - Name: "Asphodelos Mythos I"
+      Multiplier: 25
+    - Name: "Asphodelos Mythos II"
+      Multiplier: 50
+    - Name: "Asphodelos Mythos III"
+      Multiplier: 75
+    - Name: "Asphodelos Mythos IV"
+      Multiplier: 100
+    - Name: "Abyssos Mythos I"
+      Multiplier: 25
+    - Name: "Abyssos Mythos II"
+      Multiplier: 50
+    - Name: "Abyssos Mythos III"
+      Multiplier: 75
+    - Name: "Abyssos Mythos IV"
+      Multiplier: 100
+    - Name: "Anabaseios Mythos I"
+      Multiplier: 25
+    - Name: "Anabaseios Mythos II"
+      Multiplier: 50
+    - Name: "Anabaseios Mythos III"
+      Multiplier: 75
+    - Name: "Anabaseios Mythos IV"
+      Multiplier: 100
+
+    # Dawntrail Savage Raids
+    - Name: "AAC Illustrated: LHW Edition I"
+      Multiplier: 125
+    - Name: "AAC Illustrated: LHW Edition II"
+      Multiplier: 150
+    - Name: "AAC Illustrated: LHW Edition III"
+      Multiplier: 175
+    - Name: "AAC Illustrated: LHW Edition IV"
+      Multiplier: 200
+    - Name: "AAC Illustrated: CW Edition I"
+      Multiplier: 225
+    - Name: "AAC Illustrated: CW Edition II"
+      Multiplier: 250
+    - Name: "AAC Illustrated: CW Edition III"
+      Multiplier: 275
+    - Name: "AAC Illustrated: CW Edition IV"
+      Multiplier: 300
+
+    # Dawntrail Alliance Raids
+    - Name: "Ordelle Coin"
+      Multiplier: 200
+    - Name: "Montiont Coin"
+      Multiplier: 200
+
+    # Dawntrail Chaotic Raids
+    - Name: "Clouddark Demimateria II"
+      Multiplier: 200
+
+    # Ultimate Raids
     - Name: "Dreadwyrm Totem"
       Multiplier: 3000
     - Name: "Ultima Totem"

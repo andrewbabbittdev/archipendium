@@ -72,3 +72,4 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           artifacts: assets/repo.json
           replacesArtifacts: true
+          makeLatest: false

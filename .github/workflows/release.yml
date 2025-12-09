@@ -61,6 +61,7 @@ jobs:
           prerelease: ${{ github.event.release.prerelease }}
           body: ${{ steps.changelog.outputs.changelog }}
           artifacts: artifacts/bin/Archipendium/release/Archipendium/*.*
+          makeLatest: true
 
       - name: Update repository
         uses: ncipollo/release-action@v1

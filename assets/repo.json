@@ -2,7 +2,7 @@
     {
         "Author": "The Archipendium Contributors",
         "Name": "Archipendium",
-        "Description": "A plugin for giving hints for your Archipelago games.\n\nHint tokens obtained from:\n- Fates\n- Gold Saucer\n- PvP\n- The Hunt\n- Crafting Collectables\n- Gathering Collectables\n- Ishgard Restoration\n- Allied Society Quests\n- Faux Hallows\n- Island Sanctuary\n- Cosmic Explorattion\n- Eureka\n- Bozja\n- Occult Cresent\n- Endwalker & Dawntrail Extreme Trials\n- Endwalker & Dawntrail Savage Raids\n- Dawntrail Alliance Raids\n- Dawntrail Chaotic Raids\n- Ultimate Raids",
+        "Description": "A plugin for giving hints for your Archipelago games.\n\nHint tokens obtained from:\n- Fates\n- Gold Saucer\n- PvP\n- The Hunt\n- Crafting Collectables\n- Gathering Collectables\n- Ishgard Restoration\n- Allied Society Quests\n- Faux Hallows\n- Island Sanctuary\n- Cosmic Exploration\n- Eureka\n- Bozja\n- Occult Cresent\n- Endwalker & Dawntrail Extreme Trials\n- Endwalker & Dawntrail Savage Raids\n- Dawntrail Alliance Raids\n- Dawntrail Chaotic Raids\n- Ultimate Raids",
         "InternalName": "Archipendium",
         "AssemblyVersion": "{version}.0",
         "RepoUrl": "https://github.com/andrewbabbittdev/archipendium",

@@ -48,6 +48,9 @@ jobs:
         run: |
           dotnet build -c Release
           mv artifacts/bin/Archipendium/release/Archipendium/latest.zip artifacts/bin/Archipendium/release/Archipendium/Archipendium.${{ env.ReleaseVersion }}.zip
+          $repo = Get-Content -Path assets/repo.json
+          $content = $content -Replace '{version}',${{ env.ReleaseVersion }}
+          Set-Content -Path assets/repo.json -Value $content
 
       - name: Update release
         uses: ncipollo/release-action@v1
@@ -58,3 +61,13 @@ jobs:
           prerelease: ${{ github.event.release.prerelease }}
           body: ${{ steps.changelog.outputs.changelog }}
           artifacts: artifacts/bin/Archipendium/release/Archipendium/*.*
+
+      - name: Update repository
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: latest
+          allowUpdates: true
+          body: ${{ steps.changelog.outputs.changelog }}
+          artifacts: assets/repo.json
+          replacesArtifacts: true

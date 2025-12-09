@@ -49,8 +49,8 @@ jobs:
           dotnet build -c Release
           mv artifacts/bin/Archipendium/release/Archipendium/latest.zip artifacts/bin/Archipendium/release/Archipendium/Archipendium.${{ env.ReleaseVersion }}.zip
           $repo = Get-Content -Path assets/repo.json
-          $content = $content -Replace '{version}',${{ env.ReleaseVersion }}
-          Set-Content -Path assets/repo.json -Value $content
+          $repo = $repo.Replace("{version}", "${{ env.ReleaseVersion }}")
+          Set-Content -Path assets/repo.json -Value $repo
 
       - name: Update release
         uses: ncipollo/release-action@v1

@@ -87,51 +87,58 @@ public partial class QuestService : IHostedService, IDisposable
 
     private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
     {
-        if (_archipelagoService.IsConnected && message.TextValue.StartsWith("You obtain"))
+        if (!message.TextValue.StartsWith("You obtain"))
         {
-            if (_acceptedChatTypes.Contains((int)type))
-            {
-                var sanitizedMessage = FilterRegex().Replace(message.TextValue, "");
-                var match = ParseRegex().Match(sanitizedMessage);
+            return;
+        }
 
-                if (match.Success)
-                {
-                    var entity = new QuestEntity()
-                    {
-                        Name = match.Groups[2].Value,
-                        Count = string.IsNullOrEmpty(match.Groups[1].Value) ? 1 : int.Parse(match.Groups[1].Value.Replace(",", ""))
-                    };
+        if (!_acceptedChatTypes.Contains((int)type))
+        {
+            _chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
+            return;
+        }
 
-                    if (entity.Name != "archipelago tokens")
-                    {
-                        ProcessQuestEntity(entity);
-                    }
-                }
-                else
-                {
-                    _chatGui.PrintError($"[Obtained Item Match Fail]: {sanitizedMessage}", "Archipendium");
-                }
-            }
-            else
-            {
-                _chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
-            }
+        var sanitizedMessage = FilterRegex().Replace(message.TextValue, "");
+        var match = ParseRegex().Match(sanitizedMessage);
+
+        if (!match.Success)
+        {
+            _chatGui.PrintError($"[Obtained Item Match Fail]: {sanitizedMessage}", "Archipendium");
+            return;
+        }
+
+        var entity = new QuestEntity()
+        {
+            Name = match.Groups[2].Value,
+            Count = string.IsNullOrEmpty(match.Groups[1].Value) ? 1 : int.Parse(match.Groups[1].Value.Replace(",", ""))
+        };
+
+        if (entity.Name != "archipelago tokens")
+        {
+            ProcessQuestEntity(entity);
         }
     }
 
     private void ProcessQuestEntity(QuestEntity entity)
     {
+        if (!_archipelagoService.IsConnected)
+        {
+            return;
+        }
+
         var questConfig = _config.CurrentValue.Items
             .FirstOrDefault(i => i.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
 
-        if (questConfig is not null)
+        if (questConfig is null)
         {
-            _transactionTokens += (int)Math.Round(entity.Count * questConfig.Multiplier);
+            return;
+        }
 
-            if (!_transactionTimer.Enabled)
-            {
-                _transactionTimer.Start();
-            }
+        _transactionTokens += (int)Math.Round(entity.Count * questConfig.Multiplier);
+
+        if (!_transactionTimer.Enabled)
+        {
+            _transactionTimer.Start();
         }
     }
 

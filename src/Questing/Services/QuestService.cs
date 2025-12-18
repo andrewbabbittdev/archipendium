@@ -2,8 +2,8 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Archipendium.Configuration;
 using Archipendium.Core.Services;
-using Archipendium.Questing.Config;
 using Archipendium.Questing.Models;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;

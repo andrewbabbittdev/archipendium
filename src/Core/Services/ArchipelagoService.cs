@@ -7,6 +7,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using Archipendium.Configuration;
 using Dalamud.Plugin.Services;
 using Lumina.Text;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,7 @@ namespace Archipendium.Core.Services;
 /// <param name="config">The configuration options.</param>
 /// <param name="chatGui">The chat interface used to display messages and interact with users.</param>
 /// <param name="seStringEvaluator">The evaluator for processing SeString formatted messages.</param>
-public class ArchipelagoService(IOptionsMonitor<Configuration> config, IChatGui chatGui, ISeStringEvaluator seStringEvaluator) : IDisposable
+public class ArchipelagoService(IOptionsMonitor<MainConfig> config, IChatGui chatGui, ISeStringEvaluator seStringEvaluator) : IDisposable
 {
     /// <summary>
     /// Gets a value indicating whether the user is currently connected.

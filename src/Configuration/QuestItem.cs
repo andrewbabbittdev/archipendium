@@ -2,7 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Archipendium.Questing.Config;
+namespace Archipendium.Configuration;
 
 /// <summary>
 /// Represents an item used in a quest, including its name and associated token multiplier.

@@ -5,7 +5,6 @@
 using Archipendium.Core.Services;
 using Dalamud.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Archipendium.Core;
 
@@ -21,18 +20,9 @@ public static class CoreExtensions
     /// <returns>The same instance of <paramref name="builder"/> with core services configured.</returns>
     public static DalamudApplicationBuilder ConfigureCore(this DalamudApplicationBuilder builder)
     {
-        return builder.ConfigureConfiguration()
-            .ConfigureWindowing()
+        return builder.ConfigureWindowing()
             .ConfigureCommands()
             .ConfigureArchipelago();
-    }
-
-    private static DalamudApplicationBuilder ConfigureConfiguration(this DalamudApplicationBuilder builder)
-    {
-        builder.Services.Configure<Configuration>(builder.Configuration);
-        builder.Services.AddSingleton<IOptionsMonitor<Configuration>, OptionsMonitor<Configuration>>();
-
-        return builder;
     }
 
     private static DalamudApplicationBuilder ConfigureWindowing(this DalamudApplicationBuilder builder)

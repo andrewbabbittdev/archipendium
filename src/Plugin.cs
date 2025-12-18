@@ -2,6 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Archipendium.Configuration;
 using Archipendium.Core;
 using Archipendium.Questing;
 using Dalamud.Hosting;
@@ -28,7 +29,8 @@ public class Plugin : IDalamudPlugin
     {
         var builder = DalamudApplication.CreateBuilder(pluginInterface);
 
-        builder.ConfigureCore()
+        builder.ConfigureArchipendiumConfiguration()
+            .ConfigureCore()
             .ConfigureQuesting();
 
         App = builder.Build();

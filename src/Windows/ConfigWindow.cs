@@ -2,7 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Archipendium.Core;
+using Archipendium.Configuration;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Windowing;
 using Microsoft.Extensions.Options;
@@ -15,13 +15,13 @@ namespace Archipendium.Windows;
 /// </summary>
 public class ConfigWindow : Window
 {
-    private readonly IOptionsMonitor<Configuration> _config;
+    private readonly IOptionsMonitor<MainConfig> _config;
 
     /// <summary>
     /// Initializes a new instance of the ConfigWindow.
     /// </summary>
     /// <param name="config">The configuration options.</param>
-    public ConfigWindow(IOptionsMonitor<Configuration> config) : base("Archipendium Config")
+    public ConfigWindow(IOptionsMonitor<MainConfig> config) : base("Archipendium Config")
     {
         Flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
         Size = new Vector2(266, 160);

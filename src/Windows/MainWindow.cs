@@ -2,7 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Archipendium.Core;
+using Archipendium.Configuration;
 using Archipendium.Core.Services;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
@@ -18,7 +18,7 @@ namespace Archipendium.Windows;
 /// </summary>
 public class MainWindow : Window
 {
-    private readonly IOptions<Configuration> _config;
+    private readonly IOptions<MainConfig> _config;
     private readonly ArchipelagoService _archipelago;
 
     private string _password = string.Empty;
@@ -30,7 +30,7 @@ public class MainWindow : Window
     /// </summary>
     /// <param name="config">The configuration options.</param>
     /// <param name="archipelago">The Archipelago service.</param>
-    public MainWindow(IOptions<Configuration> config, ArchipelagoService archipelago) : base("Archipendium")
+    public MainWindow(IOptions<MainConfig> config, ArchipelagoService archipelago) : base("Archipendium")
     {
         Flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
         Size = new Vector2(272, 250);

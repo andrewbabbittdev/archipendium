@@ -2,9 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Archipendium.Core.Services;
 using Dalamud.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Archipendium.Core;
 
@@ -21,8 +19,7 @@ public static class CoreExtensions
     public static DalamudApplicationBuilder ConfigureCore(this DalamudApplicationBuilder builder)
     {
         return builder.ConfigureWindowing()
-            .ConfigureCommands()
-            .ConfigureArchipelago();
+            .ConfigureCommands();
     }
 
     private static DalamudApplicationBuilder ConfigureWindowing(this DalamudApplicationBuilder builder)
@@ -35,13 +32,6 @@ public static class CoreExtensions
     private static DalamudApplicationBuilder ConfigureCommands(this DalamudApplicationBuilder builder)
     {
         builder.AddCommands<Plugin>();
-
-        return builder;
-    }
-
-    private static DalamudApplicationBuilder ConfigureArchipelago(this DalamudApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton<ArchipelagoService>();
 
         return builder;
     }

@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Configuration;
-using Archipendium.Core.Services;
+using Archipendium.Services;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;

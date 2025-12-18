@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Configuration;
-using Archipendium.Core.Services;
 using Archipendium.Questing.Models;
+using Archipendium.Services;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Plugin.Services;

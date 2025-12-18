@@ -2,7 +2,7 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Archipendium.Core.Services;
+using Archipendium.Services;
 using Archipendium.Windows;
 using Dalamud.Hosting.Commands;
 

@@ -12,7 +12,7 @@ using Dalamud.Plugin.Services;
 using Lumina.Text;
 using Microsoft.Extensions.Options;
 
-namespace Archipendium.Core.Services;
+namespace Archipendium.Services;
 
 /// <summary>
 /// Provides functionality for connecting to and interacting with an Archipelago multiworld server, including managing connection state and hint points for the user.

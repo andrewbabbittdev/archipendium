@@ -20,7 +20,6 @@ namespace Archipendium.Questing.Services;
 /// </summary>
 public partial class QuestService : IHostedService, IDisposable
 {
-    private readonly IHostEnvironment _hostEnvironment;
     private readonly IOptionsMonitor<QuestingConfig> _config;
     private readonly ArchipelagoService _archipelagoService;
     private readonly IChatGui _chatGui;
@@ -37,13 +36,11 @@ public partial class QuestService : IHostedService, IDisposable
     /// <summary>
     /// Initializes a new instance of the QuestService class.
     /// </summary>
-    /// <param name="hostEnvironment">The host environment in which the application is running.</param>
     /// <param name="config">The configuration options for questing features.</param>
     /// <param name="archipelagoService">The Archipelago service used for item and quest management.</param>
     /// <param name="chatGui">The chat interface used to subscribe to and handle chat messages relevant to quest tracking.</param>
-    public QuestService(IHostEnvironment hostEnvironment, IOptionsMonitor<QuestingConfig> config, ArchipelagoService archipelagoService, IChatGui chatGui)
+    public QuestService(IOptionsMonitor<QuestingConfig> config, ArchipelagoService archipelagoService, IChatGui chatGui)
     {
-        _hostEnvironment = hostEnvironment;
         _config = config;
         _archipelagoService = archipelagoService;
         _chatGui = chatGui;
@@ -112,18 +109,12 @@ public partial class QuestService : IHostedService, IDisposable
                 }
                 else
                 {
-                    if (_hostEnvironment.IsDevelopment())
-                    {
-                        _chatGui.PrintError($"[Obtained Item Match Fail]: {sanitizedMessage}", "Archipendium");
-                    }
+                    _chatGui.PrintError($"[Obtained Item Match Fail]: {sanitizedMessage}", "Archipendium");
                 }
             }
             else
             {
-                if (_hostEnvironment.IsDevelopment())
-                {
-                    _chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
-                }
+                _chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
             }
         }
     }

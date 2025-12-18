@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Configuration;
-using Archipendium.Questing.Models;
 using Archipendium.Services;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
@@ -11,6 +10,8 @@ using Dalamud.Plugin.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
+
+using QuestEntity = (string Name, int Count);
 
 namespace Archipendium.Questing.Services;
 

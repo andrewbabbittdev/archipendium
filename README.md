@@ -18,6 +18,4 @@ To start developing Archipendium you need just a few things:
 ## Run Archipendium
 Once you have all the dependencies listed above load the plugin in Dalamud and you can access the following commands:
 
-- `/ap` - Open the server connect UI
-- `/ap points` - Lists the number of points collected
-- `/ap hint` - Gets a random hint
+- `/ap` - Opens the UI. Additional text will send a message if connected.

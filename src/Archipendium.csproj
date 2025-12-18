@@ -1,4 +1,4 @@
-﻿<Project Sdk="Dalamud.NET.Sdk">
+﻿<Project Sdk="Dalamud.Hosting.Sdk">
 
   <PropertyGroup>
     <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
@@ -6,18 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.11" />
-    <PackageReference Include="NetEscapades.Configuration.Yaml" Version="3.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="appsettings.*.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DependentUpon>appsettings.yaml</DependentUpon>
-    </Content>
   </ItemGroup>
 
 </Project>

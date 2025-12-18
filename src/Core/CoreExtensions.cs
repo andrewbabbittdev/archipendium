@@ -2,8 +2,8 @@
 // The Archipendium Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Archipendium.Core.Hosting;
 using Archipendium.Core.Services;
+using Dalamud.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 

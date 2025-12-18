@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using Archipendium.Core;
-using Archipendium.Core.Hosting;
 using Archipendium.Questing;
+using Dalamud.Hosting;
 using Dalamud.Plugin;
 
 namespace Archipendium;

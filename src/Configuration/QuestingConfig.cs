@@ -10,6 +10,11 @@ namespace Archipendium.Configuration;
 public class QuestingConfig
 {
     /// <summary>
+    /// The list of chat types that are supported.
+    /// </summary>
+    public List<int> ChatTypes { get; set; } = [];
+
+    /// <summary>
     /// The list of quest items being tracked.
     /// </summary>
     public List<QuestItem> Items { get; set; } = [];

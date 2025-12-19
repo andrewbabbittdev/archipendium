@@ -1,4 +1,8 @@
 Questing:
+  ChatTypes:
+    - 2110 # General Items
+    - 2238 # MGP
+
   Items:
     # Company Seals
     - Name: "Storm Seals"

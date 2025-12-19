@@ -25,12 +25,6 @@ public partial class QuestService : IHostedService, IDisposable
     private readonly IChatGui _chatGui;
     private readonly System.Timers.Timer _transactionTimer;
 
-    private readonly int[] _acceptedChatTypes =
-    [
-        2110, // General Items
-        2238 // MGP
-    ];
-
     private int _transactionTokens;
 
     /// <summary>
@@ -92,7 +86,7 @@ public partial class QuestService : IHostedService, IDisposable
             return;
         }
 
-        if (!_acceptedChatTypes.Contains((int)type))
+        if (!_config.CurrentValue.ChatTypes.Contains((int)type))
         {
             _chatGui.PrintError($"[Obtained Item Message Type Fail]: {(int)type}", "Archipendium");
             return;

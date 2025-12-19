@@ -17,9 +17,9 @@ Questing:
     # Allagan Tomestones
     - Name: "Allagan Tomestones of Poetics"
       Multiplier: 1
-    - Name: "Allagan Tomestones of Heliometry"
-      Multiplier: 1
     - Name: "Allagan Tomestones of Mathematics"
+      Multiplier: 2
+    - Name: "Allagan Tomestones of Mnemonics"
       Multiplier: 2
 
     # PvP
@@ -185,6 +185,8 @@ Questing:
       Multiplier: 250
     - Name: "Guardian Arkveld Certificates"
       Multiplier: 250
+    - Name: "Runaway Totems"
+      Multiplier: 250
 
     # Endwalker Savage Raids
     - Name: "Asphodelos Mythos I"
@@ -222,12 +224,20 @@ Questing:
     - Name: "AAC Illustrated: LHW Edition IV"
       Multiplier: 200
     - Name: "AAC Illustrated: CW Edition I"
-      Multiplier: 225
+      Multiplier: 125
     - Name: "AAC Illustrated: CW Edition II"
-      Multiplier: 250
+      Multiplier: 150
     - Name: "AAC Illustrated: CW Edition III"
-      Multiplier: 275
+      Multiplier: 175
     - Name: "AAC Illustrated: CW Edition IV"
+      Multiplier: 200
+    - Name: "AAC Illustrated: HW Edition I"
+      Multiplier: 225
+    - Name: "AAC Illustrated: HW Edition II"
+      Multiplier: 250
+    - Name: "AAC Illustrated: HW Edition III"
+      Multiplier: 275
+    - Name: "AAC Illustrated: HW Edition IV"
       Multiplier: 300
 
     # Dawntrail Alliance Raids

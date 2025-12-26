@@ -25,6 +25,39 @@ public partial class QuestService : IHostedService, IDisposable
     private readonly IChatGui _chatGui;
     private readonly System.Timers.Timer _transactionTimer;
 
+    private readonly XivChatType[] _blacklistedChatTypes =
+    [
+        XivChatType.Echo,
+        XivChatType.Say,
+        XivChatType.Yell,
+        XivChatType.Shout,
+        XivChatType.Party,
+        XivChatType.CrossParty,
+        XivChatType.Alliance,
+        XivChatType.PvPTeam,
+        XivChatType.FreeCompany,
+        XivChatType.NoviceNetwork,
+        XivChatType.TellIncoming,
+        XivChatType.TellOutgoing,
+        XivChatType.CustomEmote,
+        XivChatType.Ls1,
+        XivChatType.Ls2,
+        XivChatType.Ls3,
+        XivChatType.Ls4,
+        XivChatType.Ls5,
+        XivChatType.Ls6,
+        XivChatType.Ls7,
+        XivChatType.Ls8,
+        XivChatType.CrossLinkShell1,
+        XivChatType.CrossLinkShell2,
+        XivChatType.CrossLinkShell3,
+        XivChatType.CrossLinkShell4,
+        XivChatType.CrossLinkShell5,
+        XivChatType.CrossLinkShell6,
+        XivChatType.CrossLinkShell7,
+        XivChatType.CrossLinkShell8
+    ];
+
     private int _transactionTokens;
 
     /// <summary>
@@ -49,10 +82,10 @@ public partial class QuestService : IHostedService, IDisposable
         _transactionTimer.Elapsed += TransactionTimerElapsed;
     }
 
-    [GeneratedRegex("[^\u0000-\u007F]+")]
+    [GeneratedRegex("[^\u0000-\u007F]+", RegexOptions.Compiled)]
     private static partial Regex FilterRegex();
 
-    [GeneratedRegex("^You obtain a?n? ?([0-9,]+)? ?([A-Za-z0-9 '\\-\\+\\(\\)]+)\\.$")]
+    [GeneratedRegex("^You obtain a?n? ?([0-9,]+)? ?([A-Za-z0-9 '\\-\\+\\(\\)]+)\\.$", RegexOptions.Compiled)]
     private static partial Regex ParseRegex();
 
     /// <inheritdoc/>
@@ -81,16 +114,13 @@ public partial class QuestService : IHostedService, IDisposable
 
     private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
     {
-        if (!message.TextValue.StartsWith("You obtain"))
+        if (_blacklistedChatTypes.Contains(type))
         {
             return;
         }
 
-        var chatType = (int)type;
-
-        if (!_config.CurrentValue.ChatTypes.Contains(chatType))
+        if (!message.TextValue.StartsWith("You obtain"))
         {
-            _chatGui.PrintError($"[Obtained Item Message Type Fail]: {chatType}", "Archipendium");
             return;
         }
 

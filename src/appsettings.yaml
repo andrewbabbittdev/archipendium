@@ -1,13 +1,4 @@
 Questing:
-  ChatTypes:
-    - 62   # Gil
-    - 2105 # Items
-    - 2110 # Items
-    - 2238 # MGP
-    - 2366 # Items
-    - 2622 # Items
-    - 3006 # Items
-
   Items:
     # Company Seals
     - Name: "Storm Seals"

@@ -88,7 +88,7 @@ public partial class QuestService : IHostedService, IDisposable
 
         var chatType = (int)type;
 
-        if (chatType is < 2000 or > 3999)
+        if (!_config.CurrentValue.ChatTypes.Contains(chatType))
         {
             _chatGui.PrintError($"[Obtained Item Message Type Fail]: {chatType}", "Archipendium");
             return;

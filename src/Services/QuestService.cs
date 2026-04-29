@@ -4,6 +4,7 @@
 
 using Archipendium.Configuration;
 using Archipendium.Services;
+using Dalamud.Game.Chat;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Plugin.Services;
@@ -112,7 +113,7 @@ public partial class QuestService : IHostedService, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private void OnChatMessage(Dalamud.Game.Chat.IHandleableChatMessage message)
+    private void OnChatMessage(IHandleableChatMessage message)
     {
         if (_blacklistedChatTypes.Contains(message.LogKind))
         {

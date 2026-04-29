@@ -4,6 +4,7 @@
 
 using Archipendium.Configuration;
 using Archipendium.Services;
+using Dalamud.Game.Chat;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Plugin.Services;
@@ -112,19 +113,19 @@ public partial class QuestService : IHostedService, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
+    private void OnChatMessage(IHandleableChatMessage message)
     {
-        if (_blacklistedChatTypes.Contains(type))
+        if (_blacklistedChatTypes.Contains(message.LogKind))
         {
             return;
         }
 
-        if (!message.TextValue.StartsWith("You obtain"))
+        if (!message.Message.TextValue.StartsWith("You obtain"))
         {
             return;
         }
 
-        var sanitizedMessage = FilterRegex().Replace(message.TextValue, "");
+        var sanitizedMessage = FilterRegex().Replace(message.Message.TextValue, "");
         var match = ParseRegex().Match(sanitizedMessage);
 
         if (!match.Success)

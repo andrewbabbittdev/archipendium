@@ -86,7 +86,7 @@ public partial class QuestService : IHostedService, IDisposable
     [GeneratedRegex("[^\u0000-\u007F]+", RegexOptions.Compiled)]
     private static partial Regex FilterRegex();
 
-    [GeneratedRegex("^You obtain a?n? ?([0-9,]+)? ?([A-Za-z0-9 '\\-\\+\\(\\)]+)\\.$", RegexOptions.Compiled)]
+    [GeneratedRegex("^You obtain a?n? ?([0-9,]+)? ?([A-Za-z0-9 '\\-\\+\\(\\)&]+)\\.$", RegexOptions.Compiled)]
     private static partial Regex ParseRegex();
 
     /// <inheritdoc/>

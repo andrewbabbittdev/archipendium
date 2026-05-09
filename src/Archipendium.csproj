@@ -8,8 +8,4 @@
     <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Dalamud.Hosting" Version="15.0.1" />
-  </ItemGroup>
-
 </Project>

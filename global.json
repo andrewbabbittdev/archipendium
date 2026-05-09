@@ -4,6 +4,6 @@
     "rollForward": "latestFeature"
   },
   "msbuild-sdks": {
-    "Dalamud.Hosting.Sdk": "15.0.0"
+    "Dalamud.Hosting.Sdk": "15.0.1"
   }
 }
